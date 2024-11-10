@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="icon.png" />
+    <title>YouTube Music Downloader</title>
+
+    <!-- Custom Styles -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #color {
+        color: #bbb;
+        font-family: helvetica, arial, sans-serif;
+        font-size: 1.2em;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      body {
+        display: flex;
+        font-family: sans-serif;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: "Arial", sans-serif;
+        background: url("fondo.jpg") no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .from {
+        background: #272727;
+        box-shadow: 0px 0px 10px #bbbbbb;
+        padding: 20px;
+        width: 315px;
+        border-radius: 10px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 18px;
+        color: #ff8400;
+      }
+      .link {
+        width: 300px;
+        height: 30px;
+        margin-top: 15px;
+        text-align: center;
+        border: 2px solid #224885;
+        border-radius: 5px;
+        padding: 5px;
+        color: #adadad;
+        background-color: #252525;
+      }
+      .link::placeholder {
+        color: #adadad;
+      }
+      .Get {
+        width: 314px;
+        display: block;
+        background-color: #224885;
+        border: none;
+        padding: 5px;
+        font-size: 18px;
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 25px;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+      }
+      .hidden {
+        display: none;
+      }
+      .hidden.active {
+        display: block;
+      }
+      .start-h1 {
+        color: orange;
+        margin: 0 0 16px;
+      }
+      .marcas1 {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #b7b7b7;
+      }
+      #© {
+        text-align: center;
+      }
+      canvas {
+        position: fixed;
+        z-index: -1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="from">
+      <h1>Hakari YouTube Music Downloader</h1>
+      <input
+        type="text"
+        name="url_input"
+        class="link YouTube"
+        id="url_input"
+        placeholder="Inserte Url o Enlace de la Cancion"
+      />
+      <button class="Get" onclick="Get()">Obtener cancion</button>
+      <div class="hidden">
+        <input name="link idList" type="url" class="link idList" hidden />
+        <input
+          name="link form-control"
+          type="url"
+          class="link form-control"
+          hidden
+        />
+        <button type="submit" class="Get" onclick="download()">
+          Descargar
+        </button>
+      </div>
+      <div class="marcas1">
+        <div id="©">By Edisson © 2024. All rights reserved.</div>
+      </div>
+    </div>
+
+    <canvas id="c"></canvas>
+
+    <!-- scripts -->
+    <script src="main.js"></script>
+    <!-- effecto matris  -->
+    <script src="script.js"></script>
+    <!-- notas de version  -->
+    <script>
+      const notas = {
+        version: "version: v1.0",
+        build: "build: 9.11.2024",
+        fecha: "Creacion: 9-11-2024",
+        by: "By: Colega/Edisson",
+      };
+
+      console.log(notas["version"]);
+      console.log(notas["build"]);
+      console.log(notas["fecha"]);
+      console.log(notas["by"]);
+    </script>
+  </body>
+</html>
