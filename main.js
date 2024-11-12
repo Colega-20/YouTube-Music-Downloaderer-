@@ -23,8 +23,8 @@ function Music() {
   const options = {
     method: "GET",
     headers: {
-      //api original 2b929025ddmshd3302ab633a818cp1ab4cdjsne14ca95e2a8d
-      "X-RapidAPI-Key": "49813696ddmsh5426eca5b666f32p197fbbjsn9b634a7f33ab",
+      //api original 2b929025ddmshd3302ab633a818cp1ab4cdjsne14ca95e2a8d la mia 49813696ddmsh5426eca5b666f32p197fbbjsn9b634a7f33ab
+      "X-RapidAPI-Key": "2b929025ddmshd3302ab633a818cp1ab4cdjsne14ca95e2a8d",
       "X-RapidAPI-Host": "youtube-mp36.p.rapidapi.com",
     },
   };
