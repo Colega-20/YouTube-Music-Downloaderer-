@@ -20,7 +20,7 @@ var drops = [];
 function resizeCanvas() {
   // Ajustar el tamaño del canvas para que sea un poco más alto que la ventana
   c.width = window.innerWidth;
-  c.height = 2000; // 100px más alto que la altura de la ventana
+  c.height = 1900; // 100px más alto que la altura de la ventana
 
   // Recalcular el número de columnas
   var columns = c.width / font_size;
@@ -30,7 +30,6 @@ function resizeCanvas() {
 
 // Llamamos a la función de ajuste del canvas inicialmente y también al redimensionar la ventana
 resizeCanvas();
-window.addEventListener("resize", resizeCanvas, false);
 
 // the characters
 var konkani =
