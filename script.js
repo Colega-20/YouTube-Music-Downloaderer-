@@ -20,7 +20,7 @@ var drops = [];
 function resizeCanvas() {
   // Ajustar el tamaño del canvas para que sea un poco más alto que la ventana
   c.width = window.innerWidth;
-  c.height = window.innerHeight + 211; // 100px más alto que la altura de la ventana
+  c.height = window.innerHeight + 128; // 100px más alto que la altura de la ventana
 
   // Recalcular el número de columnas
   var columns = c.width / font_size;
