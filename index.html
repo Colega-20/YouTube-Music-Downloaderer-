@@ -21,17 +21,16 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        z-index: 1000;
+        z-index: 1;
       }
 
       body {
         display: flex;
         font-family: sans-serif;
-
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        height: 102vh;
         font-family: "Arial", sans-serif;
         background: url("fondo.jpg") no-repeat;
         background-attachment: fixed;
@@ -44,6 +43,7 @@
         box-shadow: 0px 0px 10px #bbbbbb;
         padding: 20px;
         border-radius: 10px;
+        z-index: 1;
       }
       h1 {
         text-align: center;
@@ -100,7 +100,6 @@
       canvas {
         position: fixed;
         display: block;
-        z-index: -1;
         margin: 0;
         background-size: cover;
         background-position: center;

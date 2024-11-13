@@ -11,41 +11,39 @@ var root = {
 
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
-
 var hueFw = false;
 var hue = -0.01;
 var font_size = 16;
 var drops = [];
 
-c.width = window.innerWidth;
-c.height = window.innerHeight;
+// Llamamos a la función de ajuste del canvas inicialmente y también al redimensionar la ventana
 
 function resizeCanvas() {
-  // Ajustar el tamaño del canvas para que sea un poco más alto que la ventana
-  c.width = window.innerWidth;
-  c.height = window.innerHeight + 6; // 100px más alto que la altura de la ventana
+  // Establece el canvas al 100% del ancho y alto de la ventana
+  c.style.width = window.innerWidth + 64;
+  c.style.height = "103%"; // 100px más alto que la altura de la ventana
+  c.width = window.innerWidth + 64;
+  c.height = window.innerHeight + 16; // 100px más alto que la altura de la ventana
 
-  // Recalcular el número de columnas
-  var columns = c.width / font_size;
+  // Recalcula el número de columnas
+  var columns = Math.floor(c.offsetWidth / font_size);
   drops = [];
   for (var x = 0; x < columns; x++) drops[x] = 1;
 }
 
 // Llamamos a la función de ajuste del canvas inicialmente y también al redimensionar la ventana
-
 window.addEventListener("resize", resizeCanvas, false);
 resizeCanvas();
 
-// the characters
+// Caracteres a usar
 var konkani =
   "゠アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレワヰヱヲンヺ・ーヽヿ0123456789";
 var characters = konkani.split("");
 
-// drawing the characters
+// Función de dibujo
 function draw() {
   ctx.fillStyle = "rgba(0,0,0, 0.1)";
   ctx.fillRect(0, 0, c.width, c.height);
-
   ctx.fillStyle = "#BBB";
   ctx.font = font_size + "px arial";
 
@@ -73,7 +71,8 @@ function draw() {
 
     ctx.fillText(text, i * font_size, drops[i] * font_size);
     drops[i]++;
-    if (drops[i] * font_size > c.height && Math.random() > 0.975) drops[i] = 0;
+    if (drops[i] * font_size > window.innerHeight + 16 && Math.random() > 0.975)
+      drops[i] = 0;
   }
 }
 
