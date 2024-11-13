@@ -16,6 +16,7 @@ var hueFw = false;
 var hue = -0.01;
 var font_size = 16;
 var drops = [];
+var previousWidth = window.innerWidth; // Guardar el ancho inicial de la ventana
 
 function resizeCanvas() {
   // Ajustar el tamaño del canvas para que sea un poco más alto que la ventana
@@ -28,8 +29,20 @@ function resizeCanvas() {
   for (var x = 0; x < columns; x++) drops[x] = 1;
 }
 
-// Llamamos a la función de ajuste del canvas inicialmente y también al redimensionar la ventana
+// Llamar a la función de ajuste del canvas inicialmente
 resizeCanvas();
+
+window.addEventListener(
+  "resize",
+  function () {
+    // Comprobar si el ancho ha cambiado antes de llamar a resizeCanvas
+    if (window.innerWidth !== previousWidth) {
+      previousWidth = window.innerWidth; // Actualizar el ancho previo
+      resizeCanvas();
+    }
+  },
+  false
+);
 
 // the characters
 var konkani =
