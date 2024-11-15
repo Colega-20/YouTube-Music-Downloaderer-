@@ -1,165 +1,68 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="icon.png" />
-    <title>YouTube Music Downloader</title>
-
-    <!-- Custom Styles -->
-    <style>
-      * {
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-      }
-      #color {
-        color: #bbb;
-        font-family: helvetica, arial, sans-serif;
-        font-size: 1.2em;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        z-index: 1;
-      }
-
-      body {
-        display: flex;
-        font-family: sans-serif;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 102vh;
-        font-family: "Arial", sans-serif;
-        background: url("fondo.jpg") no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        background-position: center;
-      }
-
-      .from {
-        background: #272727a3;
-        box-shadow: 0px 0px 10px #bbbbbb;
-        padding: 20px;
-        border-radius: 10px;
-        z-index: 1;
-      }
-      h1 {
-        text-align: center;
-        font-size: 18px;
-        color: #ff8400;
-      }
-      .link {
-        width: 300px;
-        height: 30px;
-        margin-top: 15px;
-        text-align: center;
-        border: 2px solid #224885;
-        border-radius: 5px;
-        padding: 5px;
-        color: #adadad;
-        background-color: transparent;
-      }
-      .link::placeholder {
-        color: #adadad;
-      }
-      .Get {
-        width: 314px;
-        display: block;
-        background-color: #22488591;
-        border: none;
-        padding: 5px;
-        font-size: 18px;
-        color: #fff;
-        font-weight: 600;
-        padding: 12px 25px;
-        margin-top: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        outline: none;
-      }
-      .hidden {
-        display: none;
-      }
-      .hidden.active {
-        display: block;
-      }
-      .start-h1 {
-        color: orange;
-        margin: 0 0 16px;
-      }
-      .marcas1 {
-        margin-top: 20px;
-        font-size: 14px;
-        color: #b7b7b7;
-      }
-      #© {
-        text-align: center;
-      }
-      canvas {
-        position: fixed;
-        display: block;
-        margin: 0;
-        background-size: cover;
-        background-position: center;
-        pointer-events: none;
-      }
-      @media screen and (max-width: 400px) {
-        .from {
-          padding: 8px;
-        }
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Audio Downloader</title>
   </head>
-
   <body>
-    <div class="from">
-      <h1>Hakari YouTube Music Downloader</h1>
-      <input
-        type="text"
-        name="url_input"
-        class="link YouTube"
-        id="url_input"
-        placeholder="Inserte Url o Enlace de la Cancion"
-      />
-      <button class="Get" onclick="Get()">Obtener cancion</button>
-      <div class="hidden">
-        <input name="link idList" type="url" class="link idList" hidden />
-        <input
-          name="link form-control"
-          type="url"
-          class="link form-control"
-          hidden
-        />
-        <button type="submit" class="Get" onclick="download()">
-          Descargar
-        </button>
-      </div>
-      <div class="marcas1">
-        <div id="©">By Edisson © 2024. All rights reserved.</div>
-      </div>
-    </div>
+    <h1>YouTube Audio Downloader</h1>
+    <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL" />
+    <button id="downloadBtn">Download Audio</button>
+    <p id="message"></p>
+    <a id="downloadLink" style="display: none">Download your audio file</a>
 
-    <canvas id="c"></canvas>
-
-    <!-- scripts -->
-    <script src="main.js"></script>
-    <!-- effecto matris  -->
-    <script src="script.js"></script>
-    <!-- notas de version  -->
     <script>
-      const notas = {
-        version: "version: v1.0.1",
-        build: "build: 11.11.2024",
-        fecha: "Creacion: 9-11-2024",
-        by: "By: Colega/Edisson",
-      };
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", async () => {
+          const url = document.getElementById("youtubeUrl").value;
+          const messageElement = document.getElementById("message");
+          const downloadLink = document.getElementById("downloadLink");
 
-      console.log(notas["version"]);
-      console.log(notas["build"]);
-      console.log(notas["fecha"]);
-      console.log(notas["by"]);
+          if (!url) {
+            messageElement.textContent = "Please enter a YouTube URL.";
+            return;
+          }
+
+          messageElement.textContent = "Downloading...";
+
+          try {
+            const response = await fetch(
+              "https://app-5ent.onrender.com/download",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ url }),
+              }
+            );
+
+            // Handle CORS errors or bad responses
+            if (response.status === 403) {
+              messageElement.textContent =
+                "Forbidden: CORS issues. Try again later.";
+              return;
+            }
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              messageElement.textContent = `Error: ${errorData.error}`;
+              return;
+            }
+
+            const data = await response.json();
+            messageElement.textContent = data.message;
+
+            // Set the download link
+            downloadLink.href = `https://app-5ent.onrender.com/downloads/${data.file}`;
+            downloadLink.style.display = "block"; // Show the link
+            downloadLink.textContent = "Click here to download your audio file";
+          } catch (error) {
+            messageElement.textContent = `Error: ${error.message}`;
+          }
+        });
     </script>
   </body>
 </html>
