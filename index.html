@@ -7,44 +7,49 @@
   </head>
   <body>
     <h1>YouTube Audio Downloader</h1>
-    <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL" />
+    <textarea
+      id="youtubeUrls"
+      placeholder="Enter YouTube URLs (one per line)"
+      rows="10"
+      cols="50"
+    ></textarea>
     <button id="downloadBtn">Download Audio</button>
     <p id="message"></p>
-    <a id="downloadLink" style="display: none">Download your audio file</a>
+    <div id="downloadLinks" style="display: none">
+      <h2>Download Links:</h2>
+      <ul id="linkList"></ul>
+    </div>
 
     <script>
       document
         .getElementById("downloadBtn")
         .addEventListener("click", async () => {
-          const url = document.getElementById("youtubeUrl").value;
+          const urls = document
+            .getElementById("youtubeUrls")
+            .value.split("\n")
+            .map((url) => url.trim())
+            .filter((url) => url);
           const messageElement = document.getElementById("message");
-          const downloadLink = document.getElementById("downloadLink");
+          const linkList = document.getElementById("linkList");
+          const downloadLinksDiv = document.getElementById("downloadLinks");
 
-          if (!url) {
-            messageElement.textContent = "Please enter a YouTube URL.";
+          if (urls.length === 0) {
+            messageElement.textContent =
+              "Please enter at least one YouTube URL.";
             return;
           }
 
           messageElement.textContent = "Downloading...";
 
           try {
-            const response = await fetch(
-              "https://app-5ent.onrender.com/download",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ url }),
-              }
-            );
-
-            // Handle CORS errors or bad responses
-            if (response.status === 403) {
-              messageElement.textContent =
-                "Forbidden: CORS issues. Try again later.";
-              return;
-            }
+            const response = await fetch("http://192.168.1.3:5000/download", {
+              // Updated URL
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ urls }), // Send the list of URLs
+            });
 
             if (!response.ok) {
               const errorData = await response.json();
@@ -53,12 +58,26 @@
             }
 
             const data = await response.json();
-            messageElement.textContent = data.message;
+            messageElement.textContent = "Download completed!";
 
-            // Set the download link
-            downloadLink.href = `https://app-5ent.onrender.com/downloads/${data.file}`;
-            downloadLink.style.display = "block"; // Show the link
-            downloadLink.textContent = "Click here to download your audio file";
+            // Clear previous links
+            linkList.innerHTML = "";
+            downloadLinksDiv.style.display = "block"; // Show the download links section
+
+            // Populate the download links
+            data.forEach((item) => {
+              const listItem = document.createElement("li");
+              if (item.error) {
+                listItem.textContent = `Error downloading ${item.url}: ${item.error}`;
+              } else {
+                const downloadLink = document.createElement("a");
+                downloadLink.href = `http://192.168.1.3:5000/downloads/${item.file}`;
+                downloadLink.textContent = `Download ${item.file}`;
+                downloadLink.target = "_blank"; // Open in a new tab
+                listItem.appendChild(downloadLink);
+              }
+              linkList.appendChild(listItem);
+            });
           } catch (error) {
             messageElement.textContent = `Error: ${error.message}`;
           }
